@@ -1,1 +1,582 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Desarrollo Sustentable</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="estilos.css">
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
+    section {
+      scroll-margin-top: 100px;
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #f0f4f1;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+    .hero {
+      background-color: #008259;
+      color: white;
+      text-align: center;
+      padding: 2em 1em;
+      border-bottom: 4px solid #006f4f;
+    }
+    .hero h1 {
+      margin: 0;
+      font-size: 2.5em;
+      animation: fadeDown 1s ease-in-out;
+    }
+    .subtitulo {
+      font-size: 1.2em;
+      opacity: 0.9;
+      animation: fadeUp 1.2s ease-in-out;
+    }
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: linear-gradient(to right, #008259, #008d62, #00986c, #2ca880, #57bd9e);
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+      padding: 0.8em 0;
+      animation: slideDown 0.6s ease-in-out;
+    }
+    .nav-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: auto;
+      padding: 0 1em;
+    }
+    .logo {
+      font-size: 1.2em;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+    }
+    .logo a {
+      color: white;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    .logo a:hover {
+      color: #e2f1ea;
+    }
+    .menu {
+      display: flex;
+      gap: 0.5em;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .menu a {
+      white-space: nowrap;
+      padding: 0.5em 1em;
+      border-radius: 5px;
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      transition: background-color 0.3s, transform 0.3s;
+      font-size: 0.9em;
+    }
+    .menu a:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+      transform: scale(1.05);
+    }
+    .tarjeta {
+      background-color: white;
+      border-radius: 12px;
+      padding: 1.5em;
+      margin: 2em auto;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+      max-width: 95%;
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(0, 0, 0, 0.6);
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      overflow: hidden;
+    }
+    .modal-content {
+      background-color: #fff;
+      padding: 2em;
+      border-radius: 14px;
+      max-width: 800px;
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+      animation: popIn 0.4s ease forwards;
+      transform-origin: center;
+    }
+    .fade-out {
+      animation: fadeOut 0.3s forwards;
+    }
+    @keyframes fadeOut {
+      from { opacity: 1; }
+      to { opacity: 0; }
+    }
+    @keyframes popIn {
+      0% { transform: scale(0.7); opacity: 0; }
+      80% { transform: scale(1.05); opacity: 1; }
+      100% { transform: scale(1); }
+    }
+    .subtarjetas {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1em;
+      margin-top: 1em;
+    }
+    .subtarjeta {
+      background-color: #ecfef4;
+      border: 1px solid #9be6c9;
+      border-radius: 8px;
+      padding: 0.6em 0.8em;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+      font-size: 0.85em;
+      width: 22%;
+      min-width: 140px;
+      text-align: center;
+      background-image: linear-gradient(to top, #e2fef1, #f8fffc);
+    }
+    .subtarjeta:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+      background-color: #d6f9ec;
+    }
+    .subtarjeta .contenido {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.5s ease, opacity 0.5s ease;
+      opacity: 0;
+    }
+    .subtarjeta.abierta .contenido {
+      max-height: 300px;
+      opacity: 1;
+      margin-top: 0.5em;
+    }
+    
+  </style>
+  <link rel="icon" href="salve-el-planeta.png" type="image/x-icon">
+
+</head>
+<body>
+<header class="hero" style="position: relative; padding: 1.5em 2em; text-align: center;">
+  <!-- Logo alineado a la izquierda con posición absoluta -->
+  <img src="logoTec.png" alt="Logo TecNM" style="position: absolute; left: 2em; top: 50%; transform: translateY(-50%); width: 90px; height: auto;">
+
+  <!-- Texto centrado -->
+  <div style="max-width: 100%; margin: 0 auto;">
+    <h1 style="margin: 0;">Desarrollo Sustentable</h1>
+    <p class="subtitulo">Tareas organizadas por unidad - Ingeniería en Sistemas Computacionales - 41T</p>
+  </div>
+</header>
+
+
+
+
+  <nav>
+    <div class="nav-container">
+      <div class="logo"><a href="#asignatura">Desarrollo Sustentable</a></div>
+      <ul class="menu">
+        <li><a href="#unidad1">Unidad 1</a></li>
+        <li><a href="#unidad2">Unidad 2</a></li>
+        <li><a href="#unidad3">Unidad 3</a></li>
+        <li><a href="#unidad4">Unidad 4</a></li>
+        <li><a href="#unidad5">Unidad 5</a></li>
+        <li><a href="#inicio">Sobre mí</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main>
+   <section id="asignatura" class="tarjeta">
+  <h2>Información de la Asignatura</h2>
+  <p>
+    La asignatura de Desarrollo Sustentable tiene como objetivo fomentar una conciencia crítica sobre los impactos ambientales, sociales y económicos del desarrollo humano. A lo largo del curso se analizan conceptos clave como sostenibilidad, recursos naturales, energías renovables, políticas ambientales y estrategias para un desarrollo equilibrado.
+  </p>
+  <p style="margin-top: 1em;">
+    Esta página web fue creada con el propósito de organizar y presentar de forma clara todos los trabajos, tareas y actividades que realicé durante el semestre en esta materia. Así, puedo compartir mi avance, facilitar su revisión y mantener todo mi contenido ordenado en un solo lugar.
+  </p>
+  <div style="text-align: center;">
+    <button onclick="mostrarPDF()" style="margin-top: 1.5em; padding: 0.6em 1.5em; background: #2e7d32; color: white; border: none; border-radius: 6px; font-weight: 600; font-size: 0.95em; cursor: pointer;">
+      📄 Ver Temario
+    </button>
+  </div>
+
+  <div id="visorPDF" class="modal" onclick="cerrarPDFModal()">
+    <div class="modal-content" onclick="event.stopPropagation()">
+      <iframe src="unidad1/materia.pdf" width="100%" height="500px" style="border: none;"></iframe>
+    </div>
+  </div>
+</section>
+
+
+    <section id="unidad1" class="tarjeta" onclick="document.getElementById('unidad1-modal').style.display = 'flex'">
+      <h2>Unidad 1 - Introducción al Desarrollo
+Sustentable
+</h2>
+      <p>Haz clic aquí para ver las tareas de esta unidad.</p>
+    </section>
+
+    <!-- Modal de Unidad 1 -->
+<div id="unidad1-modal" class="modal" onclick="cerrarUnidad1Modal()">
+  <div class="modal-content" onclick="event.stopPropagation()">
+    <h2> Unidad 1 - Trabajos y actividades</h2>
+
+    <div class="subtarjetas">
+
+      <!-- Botón para ver imagen del temario -->
+      <button onclick="mostrarImagen('unidad1/diagnostico.jpg')" style="margin-top:1em; padding:0.6em 1.2em; background:#2e7d32; color:white; border:none; border-radius:6px; font-weight:600; font-size:0.95em; cursor:pointer;">
+        🖼️ Examen diagnostico
+      </button>
+
+      <button onclick="mostrarPDFModal('unidad1/primeraSesion.pdf')" style="margin-top:1em; padding:0.6em 1.2em; background:#2e7d32; color:white; border:none; border-radius:6px; font-weight:600; font-size:0.95em; cursor:pointer;">
+      📄 Primera Sesion
+      </button>
+
+      <button onclick="mostrarImagen('unidad1/sustentabilidad.jpg')" style="margin-top:1em; padding:0.6em 1.2em; background:#2e7d32; color:white; border:none; border-radius:6px; font-weight:600; font-size:0.95em; cursor:pointer;">
+  📝 Tarea 1 Introducción
+</button>
+
+<button onclick="mostrarImagen('unidad1/definiciones.jpg')" style="margin-top:1em; padding:0.6em 1.2em; background:#2e7d32; color:white; border:none; border-radius:6px; font-weight:600; font-size:0.95em; cursor:pointer;">
+  📝 Tarea 2 Definiciones
+</button>
+
+<button onclick="mostrarPDFModal('unidad1/InvestigacionDeCampo.pdf')" style="margin-top:1em; padding:0.6em 1.2em; background:#2e7d32; color:white; border:none; border-radius:6px; font-weight:600; font-size:0.95em; cursor:pointer;">
+  🔍 Investigación de campo
+</button>
+
+<button onclick="mostrarPDFModal('unidad1/Practica de campo.pdf')" style="margin-top:1em; padding:0.6em 1.2em; background:#2e7d32; color:white; border:none; border-radius:6px; font-weight:600; font-size:0.95em; cursor:pointer;">
+  🔍 Investigación de campo 2
+</button>
+
+<button onclick="mostrarPDFModal('unidad1/apuntes.pdf')" style="margin-top:1em; padding:0.6em 1.2em; background:#2e7d32; color:white; border:none; border-radius:6px; font-weight:600; font-size:0.95em; cursor:pointer;">
+  🗒️ Apuntes
+</button>
+
+<button onclick="mostrarImagen('unidad1/examen.jpg')" style="margin-top:1em; padding:0.6em 1.2em; background:#2e7d32; color:white; border:none; border-radius:6px; font-weight:600; font-size:0.95em; cursor:pointer;">
+  📘 Examen
+</button>
+
+
+      <!-- Aquí puedes agregar más subtarjetas si deseas -->
+    </div>
+  </div>
+</div>
+
+
+
+  </div>
+
+  
+
+
+   <!-- UNIDAD 2 -->
+<section id="unidad2" class="tarjeta" onclick="document.getElementById('unidad2-modal').style.display = 'flex'">
+  <h2>Unidad 2 - Escenario natural</h2>
+  <p>Haz clic aquí para ver las tareas de esta unidad.</p>
+</section>
+<div id="unidad2-modal" class="modal" onclick="cerrarUnidadModal('unidad2-modal')">
+  <div class="modal-content" onclick="event.stopPropagation()">
+    <h2>Unidad 2 - Trabajos y Actividades</h2>
+    <div class="subtarjetas">
+      <button onclick="mostrarPDFModal('unidad2/pelicula.pdf')" style="margin-top:1em; padding:0.6em 1.2em; background:#2e7d32; color:white; border:none; border-radius:6px; font-weight:600; font-size:0.95em; cursor:pointer;">
+  📝 Tarea 1 Película
+</button>
+
+<button onclick="mostrarImagen('unidad2/informe.jpeg')" style="margin-top:1em; padding:0.6em 1.2em; background:#2e7d32; color:white; border:none; border-radius:6px; font-weight:600; font-size:0.95em; cursor:pointer;">
+  📝 Tarea 2 Informe
+</button>
+
+<button onclick="window.open('https://vm.tiktok.com/ZMBJKpqf6/', '_blank')" style="margin-top:1em; padding:0.6em 1.2em; background:#2e7d32; color:white; border:none; border-radius:6px; font-weight:600; font-size:0.95em; cursor:pointer;">
+  🎥 Video conciencia ambiental
+</button>
+
+
+<button onclick="mostrarPDFModal('unidad2/informeClase.pdf')" style="margin-top:1em; padding:0.6em 1.2em; background:#2e7d32; color:white; border:none; border-radius:6px; font-weight:600; font-size:0.95em; cursor:pointer;">
+  📄 Informe Brundtland
+</button>
+
+<button onclick="mostrarPDFModal('unidad2/apuntes.pdf')" style="margin-top:1em; padding:0.6em 1.2em; background:#2e7d32; color:white; border:none; border-radius:6px; font-weight:600; font-size:0.95em; cursor:pointer;">
+  🗒️ Apuntes
+</button>
+
+    </div>
+  </div>
+</div>
+
+<!-- UNIDAD 3 -->
+<section id="unidad3" class="tarjeta" onclick="document.getElementById('unidad3-modal').style.display = 'flex'">
+  <h2>Unidad 3 - Escenario socio-cultural</h2>
+  <p>Haz clic aquí para ver las tareas de esta unidad.</p>
+</section>
+
+<div id="unidad3-modal" class="modal" onclick="cerrarUnidadModal('unidad3-modal')">
+  <div class="modal-content" onclick="event.stopPropagation()">
+    <h2>Unidad 3 - Trabajos y Actividades</h2>
+
+    <div class="subtarjetas">
+      <!-- Tareas principales -->
+      <button onclick="mostrarPDFModal('unidad3/resumen.pdf')" style="margin-top:1em; padding:0.6em 1.2em; background:#2e7d32; color:white; border:none; border-radius:6px; font-weight:600; font-size:0.95em; cursor:pointer;"
+>📝 Tarea 1 Resumen</button>
+      <button onclick="mostrarPDFModal('unidad3/proyecto.pdf')" style="margin-top:1em; padding:0.6em 1.2em; background:#2e7d32; color:white; border:none; border-radius:6px; font-weight:600; font-size:0.95em; cursor:pointer;"
+>📄 Tarea 2 Proyecto ODS</button>
+      <button onclick="mostrarPDFModal('unidad3/cuadro.pdf')" style="margin-top:1em; padding:0.6em 1.2em; background:#2e7d32; color:white; border:none; border-radius:6px; font-weight:600; font-size:0.95em; cursor:pointer;"
+>📘 Tarea 3 LGEEPA</button>
+      <button onclick="mostrarPDFModal('unidad3/apuntes.pdf')" style="margin-top:1em; padding:0.6em 1.2em; background:#2e7d32; color:white; border:none; border-radius:6px; font-weight:600; font-size:0.95em; cursor:pointer;"
+>🗒️ Apuntes</button>
+    </div>
+
+    <hr style="margin: 2em 0; border: none; border-top: 2px dashed #2e7d32;">
+    <h3 style="text-align: center; margin-bottom: 1em;">ODS - Objetivos de Desarrollo Sostenible</h3>
+
+    <div class="subtarjetas">
+      <button onclick="mostrarPDFModal('unidad3/ods/1.pdf')" style="margin-top:1em; padding:0.6em 1.2em; background:#2e7d32; color:white; border:none; border-radius:6px; font-weight:600; font-size:0.95em; cursor:pointer;"
+>🌍 ODS 1</button>
+      <button onclick="mostrarPDFModal('unidad3/ods/2.pdf')" style="margin-top:1em; padding:0.6em 1.2em; background:#2e7d32; color:white; border:none; border-radius:6px; font-weight:600; font-size:0.95em; cursor:pointer;"
+>🌍 ODS 2</button>
+      <button onclick="mostrarPDFModal('unidad3/ods/3.pdf')" style="margin-top:1em; padding:0.6em 1.2em; background:#2e7d32; color:white; border:none; border-radius:6px; font-weight:600; font-size:0.95em; cursor:pointer;"
+>🌍 ODS 3</button>
+      <button onclick="mostrarPDFModal('unidad3/ods/4.pdf')" style="margin-top:1em; padding:0.6em 1.2em; background:#2e7d32; color:white; border:none; border-radius:6px; font-weight:600; font-size:0.95em; cursor:pointer;"
+>🌍 ODS 4</button>
+      <button onclick="mostrarPDFModal('unidad3/ods/5.pdf')" style="margin-top:1em; padding:0.6em 1.2em; background:#2e7d32; color:white; border:none; border-radius:6px; font-weight:600; font-size:0.95em; cursor:pointer;"
+>🌍 ODS 5</button>
+      <button onclick="mostrarPDFModal('unidad3/ods/6.pdf')" style="margin-top:1em; padding:0.6em 1.2em; background:#2e7d32; color:white; border:none; border-radius:6px; font-weight:600; font-size:0.95em; cursor:pointer;"
+>🌍 ODS 6</button>
+      <button onclick="mostrarPDFModal('unidad3/ods/7.pdf')" style="margin-top:1em; padding:0.6em 1.2em; background:#2e7d32; color:white; border:none; border-radius:6px; font-weight:600; font-size:0.95em; cursor:pointer;"
+>🌍 ODS 7</button>
+      <button onclick="mostrarPDFModal('unidad3/ods/8.pdf')" style="margin-top:1em; padding:0.6em 1.2em; background:#2e7d32; color:white; border:none; border-radius:6px; font-weight:600; font-size:0.95em; cursor:pointer;"
+>🌍 ODS 8</button>
+      <button onclick="mostrarPDFModal('unidad3/ods/9.pdf')" style="margin-top:1em; padding:0.6em 1.2em; background:#2e7d32; color:white; border:none; border-radius:6px; font-weight:600; font-size:0.95em; cursor:pointer;"
+>🌍 ODS 9</button>
+      <button onclick="mostrarPDFModal('unidad3/ods/10.pdf')" style="margin-top:1em; padding:0.6em 1.2em; background:#2e7d32; color:white; border:none; border-radius:6px; font-weight:600; font-size:0.95em; cursor:pointer;"
+>🌍 ODS 10</button>
+      <button onclick="mostrarPDFModal('unidad3/ods/11.pdf')" style="margin-top:1em; padding:0.6em 1.2em; background:#2e7d32; color:white; border:none; border-radius:6px; font-weight:600; font-size:0.95em; cursor:pointer;"
+>🌍 ODS 11</button>
+      <button onclick="mostrarPDFModal('unidad3/ods/12.pdf')" style="margin-top:1em; padding:0.6em 1.2em; background:#2e7d32; color:white; border:none; border-radius:6px; font-weight:600; font-size:0.95em; cursor:pointer;"
+>🌍 ODS 12</button>
+      <button onclick="mostrarPDFModal('unidad3/ods/13.pdf')" style="margin-top:1em; padding:0.6em 1.2em; background:#2e7d32; color:white; border:none; border-radius:6px; font-weight:600; font-size:0.95em; cursor:pointer;"
+>🌍 ODS 13</button>
+      <button onclick="mostrarPDFModal('unidad3/ods/14.pdf')" style="margin-top:1em; padding:0.6em 1.2em; background:#2e7d32; color:white; border:none; border-radius:6px; font-weight:600; font-size:0.95em; cursor:pointer;"
+>🌍 ODS 14</button>
+      <button onclick="mostrarPDFModal('unidad3/ods/15.pdf')" style="margin-top:1em; padding:0.6em 1.2em; background:#2e7d32; color:white; border:none; border-radius:6px; font-weight:600; font-size:0.95em; cursor:pointer;"
+>🌍 ODS 15</button>
+      <button onclick="mostrarPDFModal('unidad3/ods/16.pdf')" style="margin-top:1em; padding:0.6em 1.2em; background:#2e7d32; color:white; border:none; border-radius:6px; font-weight:600; font-size:0.95em; cursor:pointer;"
+>🌍 ODS 16</button>
+      <button onclick="mostrarPDFModal('unidad3/ods/17.pdf')" style="margin-top:1em; padding:0.6em 1.2em; background:#2e7d32; color:white; border:none; border-radius:6px; font-weight:600; font-size:0.95em; cursor:pointer;"
+>🌍 ODS 17</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- UNIDAD 4 -->
+<section id="unidad4" class="tarjeta" onclick="document.getElementById('unidad4-modal').style.display = 'flex'">
+  <h2>Unidad 4 - Escenario económico</h2>
+  <p>Haz clic aquí para ver las tareas de esta unidad.</p>
+</section>
+<div id="unidad4-modal" class="modal" onclick="cerrarUnidadModal('unidad4-modal')">
+  <div class="modal-content" onclick="event.stopPropagation()">
+    <h2>Unidad 4 - Trabajos y Actividades</h2>
+    <div class="subtarjetas">
+      <button onclick="mostrarPDFModal('unidad4/resumen.pdf')" style="margin-top:1em; padding:0.6em 1.2em; background:#2e7d32; color:white; border:none; border-radius:6px; font-weight:600; font-size:0.95em; cursor:pointer;">
+  📝 Tarea 1 Resumen
+</button>
+
+<button onclick="mostrarPDFModal('unidad4/pib.pdf')" style="margin-top:1em; padding:0.6em 1.2em; background:#2e7d32; color:white; border:none; border-radius:6px; font-weight:600; font-size:0.95em; cursor:pointer;">
+  📊 Tarea 2 PIB
+</button>
+
+<button onclick="mostrarPDFModal('unidad4/conceptos.pdf')" style="margin-top:1em; padding:0.6em 1.2em; background:#2e7d32; color:white; border:none; border-radius:6px; font-weight:600; font-size:0.95em; cursor:pointer;">
+  📚 Tarea 3-4 Conceptos - Sistemas y Factores
+</button>
+
+<button onclick="mostrarPDFModal('unidad4/serviciosAmbientales.pdf')" style="margin-top:1em; padding:0.6em 1.2em; background:#2e7d32; color:white; border:none; border-radius:6px; font-weight:600; font-size:0.95em; cursor:pointer;">
+  🌱 Tarea 5 Sistemas ambientales
+</button>
+
+<button onclick="mostrarPDFModal('unidad4/apuntes.pdf')" style="margin-top:1em; padding:0.6em 1.2em; background:#2e7d32; color:white; border:none; border-radius:6px; font-weight:600; font-size:0.95em; cursor:pointer;">
+  🗒️ Apuntes
+</button>
+
+    </div>
+  </div>
+</div>
+
+<!-- UNIDAD 5 -->
+<section id="unidad5" class="tarjeta" onclick="document.getElementById('unidad5-modal').style.display = 'flex'">
+  <h2>Unidad 5 - Escenario modificado</h2>
+  <p>Haz clic aquí para ver las tareas de esta unidad.</p>
+</section>
+<div id="unidad5-modal" class="modal" onclick="cerrarUnidadModal('unidad5-modal')">
+  <div class="modal-content" onclick="event.stopPropagation()">
+    <h2>Unidad 5 - Trabajos y Actividades</h2>
+    <div class="subtarjetas">
+      <button onclick="mostrarPDFModal('unidad5/Contaminación ambiental.pdf')" style="margin-top:1em; padding:0.6em 1.2em; background:#2e7d32; color:white; border:none; border-radius:6px; font-weight:600; font-size:0.95em; cursor:pointer;">
+  🌫️ Tarea 1 Contaminación ambiental
+</button>
+
+<button onclick="mostrarPDFModal('unidad5/HuellaEcologica.pdf')" style="margin-top:1em; padding:0.6em 1.2em; background:#2e7d32; color:white; border:none; border-radius:6px; font-weight:600; font-size:0.95em; cursor:pointer;">
+  🌍 Tarea 2 Huella ecológica
+</button>
+
+<button onclick="mostrarPDFModal('unidad5/SituaciónDeMéxico.pdf')" style="margin-top:1em; padding:0.6em 1.2em; background:#2e7d32; color:white; border:none; border-radius:6px; font-weight:600; font-size:0.95em; cursor:pointer;">
+  📄 Tarea 3 Situación de México
+</button>
+
+<button onclick="mostrarPDFModal('unidad5/Reporte Siembra.pdf')" style="margin-top:1em; padding:0.6em 1.2em; background:#2e7d32; color:white; border:none; border-radius:6px; font-weight:600; font-size:0.95em; cursor:pointer;">
+  📄 Tarea 4 Reporte final limon
+</button>
+
+<button onclick="mostrarPDFModal('unidad5/apuntes.pdf')" style="margin-top:1em; padding:0.6em 1.2em; background:#2e7d32; color:white; border:none; border-radius:6px; font-weight:600; font-size:0.95em; cursor:pointer;">
+  🗒️ Apuntes
+</button>
+
+    </div>
+  </div>
+</div>
+
+    <section id="inicio" class="tarjeta perfil" style="text-align: center;">
+  <img src="foto.jpeg" alt="Mi foto" class="foto-perfil"
+       style="width: 140px; height: 140px; object-fit: cover; border-radius: 50%; border: 4px solid #008259; margin: 0 auto 1em;">
+  
+  <h2>Sobre mí</h2>
+  
+  <p>
+    Hola, mi nombre es <strong>Paul Torres Navarrete</strong> y soy estudiante de Ingeniería en Sistemas Computacionales.
+    Esta página recopila mis tareas de la materia de Desarrollo Sustentable.
+  </p>
+  
+  <p><strong>Correo:</strong> paulx098@gmail.com</p>
+  
+  <div class="redes" style="display: flex; justify-content: center; gap: 1em; flex-wrap: wrap; margin-top: 1em;">
+    <a href="#" target="_blank">Instagram</a>
+    <a href="#" target="_blank">LinkedIn</a>
+    <a href="#" target="_blank">GitHub</a>
+  </div>
+</section>
+
+  </main>
+
+  <script>
+
+    function cerrarUnidadModal(id) {
+    const modal = document.getElementById(id);
+    modal.classList.add('fade-out');
+    document.body.style.overflow = '';
+    setTimeout(() => {
+      modal.style.display = 'none';
+      modal.classList.remove('fade-out');
+    }, 300);
+  }
+
+    function cerrarUnidad1Modal() {
+  const modal = document.getElementById('unidad1-modal');
+  modal.classList.add('fade-out');
+  document.body.style.overflow = '';
+  setTimeout(() => {
+    modal.style.display = 'none';
+    modal.classList.remove('fade-out');
+  }, 300);
+}
+
+    function mostrarPDF() {
+      document.body.style.overflow = 'hidden';
+      const visor = document.getElementById('visorPDF');
+      visor.style.display = 'flex';
+      visor.scrollTop = 0;
+    }
+
+    function cerrarPDFModal() {
+      const modal = document.getElementById('visorPDF');
+      modal.classList.add('fade-out');
+      document.body.style.overflow = '';
+      setTimeout(() => {
+        modal.style.display = 'none';
+        modal.classList.remove('fade-out');
+      }, 300);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const modales = document.querySelectorAll('.modal');
+      modales.forEach(modal => {
+        modal.addEventListener('click', () => cerrarPDFModal(modal));
+        const contenido = modal.querySelector('.modal-content');
+        contenido.addEventListener('click', e => e.stopPropagation());
+      });
+    });
+
+function mostrarImagen(rutaImagen) {
+  const visor = document.getElementById('visorImagenGlobal');
+  const img = document.getElementById('imagenGlobal');
+  img.src = rutaImagen;
+  visor.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+
+function cerrarImagenGlobalModal() {
+  const visor = document.getElementById('visorImagenGlobal');
+  visor.classList.add('fade-out');
+  setTimeout(() => {
+    visor.style.display = 'none';
+    visor.classList.remove('fade-out');
+    document.body.style.overflow = '';
+  }, 300);
+}
+
+
+function mostrarPDFModal(rutaPDF) {
+  const visor = document.getElementById('visorPDFGlobal');
+  const iframe = document.getElementById('iframePDF');
+  iframe.src = rutaPDF;
+  visor.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+
+function cerrarPDFGlobalModal() {
+  const visor = document.getElementById('visorPDFGlobal');
+  visor.classList.add('fade-out');
+  setTimeout(() => {
+    visor.style.display = 'none';
+    visor.classList.remove('fade-out');
+    document.body.style.overflow = '';
+  }, 300);
+}
+
+
+
+  </script>
+
+  <!-- Visor Global para PDF -->
+<div id="visorPDFGlobal" class="modal" onclick="cerrarPDFGlobalModal()" style="z-index: 10000;">
+  <div class="modal-content" onclick="event.stopPropagation()" style="padding: 0; border-radius: 0; max-height: 95vh;">
+    <iframe id="iframePDF" src="" width="100%" height="600px" style="border: none;"></iframe>
+  </div>
+</div>
+
+<!-- Visor de Imagen Global a pantalla completa -->
+<div id="visorImagenGlobal" class="modal" onclick="cerrarImagenGlobalModal()" style="z-index: 10000;">
+  <div class="modal-content" onclick="event.stopPropagation()" style="padding: 0; background: none; box-shadow: none; border-radius: 0;">
+    <img id="imagenGlobal" src="" alt="Vista de imagen" style="max-width: 100vw; max-height: 100vh; width: auto; height: auto; display: block; margin: auto;">
+  </div>
+</div>
+
+</body>
+</html>
 
